@@ -1,0 +1,163 @@
+/* ============ Основные стили ============ */
+
+body {
+	background-color : #0F172A;
+	height           : 100vh;
+	margin           : 0;
+	display          : grid;
+	place-items      : center;
+	overflow         : hidden;
+}
+
+.base {
+	width         : 180px;
+	height        : 180px;
+	background    : radial-gradient(circle at center, #EFE5C5 30%, #181701 100%);
+	border-radius : 50%;
+	display       : grid;
+	place-items   : center;
+	box-shadow    : 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.compass-icon {
+	--primary-color : #EF4444;
+	--active-color  : #10B981;
+	
+	cursor          : pointer;
+	overflow        : visible;
+	filter          : drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+	transition      : filter 0.4s ease;
+}
+
+.compass-icon:hover {
+	transform : scale(1.06);
+	filter    : drop-shadow(0 8px 25px rgba(0, 0, 0, 0.5));
+}
+
+/* ============ Активное состояние ============ */
+
+body.active {
+	background : radial-gradient(circle at center, #0A2F1F 0%, #0F172A 70%);
+	transition : background 1s ease;
+}
+
+.compass-icon.active {
+	transform : scale(1.06); /* только лёгкое увеличение, без rotate! */
+}
+
+.compass-icon.active .compass-base {
+	stroke       : #10B981;
+	stroke-width : 90;
+	
+	/* Три слоя свечения */
+	filter       :
+				drop-shadow(0 0 20px #EFE5C5)
+				drop-shadow(0 0 40px #EFE5C5)
+				drop-shadow(0 0 70px #EFE5C5);
+	
+	animation    :  glowPulse 2.5s ease-in-out infinite alternate,
+					nuclearGlow 1.8s ease-in-out infinite alternate;
+	
+	
+}
+
+.compass-icon.active .compass-base-blue {
+	fill : #0A3D2D; /* тёмно-зелёный подтон */
+}
+
+.compass-icon.active .compass-arrow.north {
+	fill   : #34D399;
+	filter : drop-shadow(0 0 15px #34D399);
+}
+
+/* ============ Элементы компаса ============ */
+
+.compass-base {
+	fill              : none;
+	stroke            : var(--primary-color);
+	stroke-width      : 70;
+	stroke-linecap    : round;
+	stroke-dasharray  : 6000;
+	stroke-dashoffset : 6000;
+	animation         : drawCircle 1.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+	transition        : stroke 0.7s ease, stroke-width 0.6s ease;
+}
+
+.compass-base-blue {
+	fill       : #161867;
+	opacity    : 0.92;
+	transition : fill 0.7s ease;
+}
+
+.compass-arrow.north {
+	fill             : var(--primary-color);
+	opacity          : 0;
+	transform-origin : 512px 256px;
+	animation        : fadeInRotate 0.9s ease 1.2s forwards;
+}
+
+/* ============ Анимации ============ */
+
+@keyframes drawCircle {
+	to {
+		stroke-dashoffset : 0;
+	}
+}
+
+@keyframes fadeInRotate {
+	from {
+		opacity   : 0;
+		transform : rotate(-90deg);
+	}
+	to {
+		opacity   : 1;
+		transform : rotate(0deg);
+	}
+}
+
+@keyframes glowPulse {
+	from {
+		filter :
+				drop-shadow(0 0 20px #F1EFEB)
+				drop-shadow(0 0 40px #F3EEDC)
+				drop-shadow(0 0 70px #EFE5C5);
+	}
+	to {
+		filter :
+				drop-shadow(0 0 30px #EFE5C5)
+				drop-shadow(0 0 60px #EFE5C5)
+				drop-shadow(0 0 100px #EFE5C5);
+	}
+}
+
+/* ============ Дополнительные эффекты ============ */
+
+@keyframes nuclearGlow {
+	0% { filter :
+				drop-shadow(0 0 30px #10B981)
+				drop-shadow(0 0 70px #10B981)
+				drop-shadow(0 0 120px #10B981); }
+	50% { filter :
+				drop-shadow(0 0 40px #34D399)
+				drop-shadow(0 0 90px #34D399)
+				drop-shadow(0 0 160px #34D399); }
+	100% { filter :
+				drop-shadow(0 0 50px #6EE7B7)
+				drop-shadow(0 0 110px #6EE7B7)
+				drop-shadow(0 0 200px #6EE7B7); }
+}
+
+@keyframes shiver {
+	from { transform : translate(1px, 1px) rotate(0.5deg); }
+	to { transform : translate(-1px, -1px) rotate(0.5deg); }
+}
+
+/* ============ Эффекты активного состояния ============ */
+
+.compass-icon.active {
+	animation-name            : shiver;
+	animation-duration        : 0.15s;
+	animation-iteration-count : 1;
+	animation-direction       : alternate;
+	animation-fill-mode       : forwards;
+}
